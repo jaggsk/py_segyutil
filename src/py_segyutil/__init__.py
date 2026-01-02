@@ -1,4 +1,2 @@
-from .core import SegyUtil
+from py_segyutil.main import *
 
-__all__ = ["SegyUtil"]
-__version__ = "0.0.1"
