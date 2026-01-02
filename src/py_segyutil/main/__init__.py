@@ -1,1 +1,1 @@
-from segyutil_base import SegyUtil
+from .segyutil_base import SegyUtil
