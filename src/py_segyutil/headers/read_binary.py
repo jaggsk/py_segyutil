@@ -1,6 +1,6 @@
 from .bin_trace_default import binary_trace_header_parameters
 
-def segy_read_binary_header(binary_bin,big_endian = True): 
+def segy_read_binary_header(binary_bin=None,big_endian = True): 
     '''
     Extract key parameters from binary trace header by iterating through dictionary.
     trace format code used to define the data format, bytes per sample and associated decoding parameters
