@@ -39,7 +39,7 @@ class SegyUtil:
             #read the required number of bytes for ebcdic header - standard = 3200
             self.segy_ebcdic = segy_read_ebcdic_header(self.segy_infile_reader_binary.read(self.bytes_ebcdic))
             #read the required number of bytes for ebcdic header - standard = 400
-            self.segy_binary = binary_trace_header_parameters(self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
+            self.segy_binary = binary_trace_header_parameters(binary_bin=self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
 
             self.segy_infile_reader_binary.close()
 
