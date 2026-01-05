@@ -1,5 +1,6 @@
 import os
 from ..utils.file_check import segy_file_valid
+from ..utils import sample_format_code
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 
@@ -43,8 +44,8 @@ class SegyUtil:
 
             self.segy_infile_reader_binary.close()
 
-        print(self.segy_binary)
 
+        self.trace_format_code,self.trace_format_code_string = sample_format_code(trace_format_code=self.segy_binary['Data Sample Format Code'][2])
 
     def run(self) -> None:
         """Run the main logic"""
