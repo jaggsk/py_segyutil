@@ -11,7 +11,17 @@ class SegyUtil:
                  bytes_trace_header = 240,bytes_extended_textual_header = 3200,
                  big_endian = True,) -> None:
         
-
+        #standard byte length of the key information header - DO NOT CHANGE!!!!!
+        self.bytes_ebcdic = bytes_ebdcdic 
+        self.bytes_bin_trace_header = bytes_bin_trace_header
+        self.bytes_trace_header = bytes_trace_header
+        self.bytes_extended_textual_header = bytes_extended_textual_header
+        
+        #big endian set to true for decoding header information - default = 'big'
+        if big_endian == True:
+            self.big_endian = 'big'
+        else:
+            self.big_endian = 'little'
 
         #assign all class variables to a dictionary - appears to dynamically update....
         self.segy_dict =  vars(self)
@@ -19,10 +29,9 @@ class SegyUtil:
 
     def read_segy(self,segy_path = None):
 
-
         self.segy_infile_read = segy_path
 
-        segy_file_valid(qc_path= self.segy_infile_read)
+        self.segy_path, self.segy_file,self.segy_size = segy_file_valid(qc_path= self.segy_infile_read)
         #directory and file name information
         #self.cwd = os.getcwd() 
 

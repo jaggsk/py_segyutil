@@ -31,3 +31,5 @@ def segy_file_valid(qc_path = None):
     segy_dir, segy_file = os.path.split(qc_path)
     segy_dir_check(in_segy_dir = segy_dir)
     segy_file_check(in_segy_file = qc_path)
+
+    return segy_dir, segy_file, os.path.getsize(qc_path)
