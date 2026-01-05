@@ -1,5 +1,4 @@
-def binary_trace_header_parameters():
-        
+def binary_trace_header_parameters():    
     '''
     Create a python dictionary to read 400 byte binary trace header.
     Key = category as text line

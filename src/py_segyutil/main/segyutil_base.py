@@ -58,7 +58,7 @@ class SegyUtil:
             #    self.extended_textual_head_bin = self.segy_infile_reader_binary.read((self.textual_header_code*self.bytes_extended_textual_header))
             #else:
             #    print("No extended textual header files found")           
-
+            self.segy_binary = segy_read_ebcdic_header(self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
             #close open read file
             self.segy_infile_reader_binary.close()
 
