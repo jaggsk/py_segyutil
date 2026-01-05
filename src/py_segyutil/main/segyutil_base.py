@@ -1,7 +1,7 @@
 import os
 from ..utils.file_check import segy_file_valid
 from ..headers import segy_read_ebcdic_header
-from ..headers import binary_trace_header_parameters
+from ..headers import segy_read_binary_header
 
 class SegyUtil:
     """
@@ -39,7 +39,7 @@ class SegyUtil:
             #read the required number of bytes for ebcdic header - standard = 3200
             self.segy_ebcdic = segy_read_ebcdic_header(self.segy_infile_reader_binary.read(self.bytes_ebcdic))
             #read the required number of bytes for ebcdic header - standard = 400
-            self.segy_binary = binary_trace_header_parameters(binary_bin=self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
+            self.segy_binary = segy_read_binary_header(binary_bin=self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
 
             self.segy_infile_reader_binary.close()
 
