@@ -19,9 +19,9 @@ def segy_read_binary_header(binary_bin,big_endian = True):
         
         
     #iterate through each dictionary key and store the extracted integer from binary at position number 3 in the dictionary structure.
-    #for key in bin_dict:
-    #        #print(bin_dict[key][0])
-    #        self.bin_dict[key][2] = int.from_bytes(self.bin_trace_head_bin[self.bin_dict[key][0]:self.bin_dict[key][1]], byteorder=self.big_endian)
+    for key in bin_dict:
+        #print(bin_dict[key][0])
+        bin_dict[key][2] = int.from_bytes(binary_bin[bin_dict[key][0]:bin_dict[key][1]], byteorder=big_endian_def)
     #        if self.print_summary == True:
     #            #binary trace header summary if requested
     #            print('{0}, bytes {1} to {2} = {3}'.format(key,self.bin_dict[key][0] + 1,self.bin_dict[key][1],self.bin_dict[key][2]))

@@ -1,6 +1,7 @@
 import os
 from ..utils.file_check import segy_file_valid
 from ..headers import segy_read_ebcdic_header
+from ..headers import binary_trace_header_parameters
 
 class SegyUtil:
     """
@@ -31,49 +32,19 @@ class SegyUtil:
     def read_segy(self,segy_path = None):
 
         self.segy_infile_read = segy_path
-
         self.segy_path, self.segy_file,self.segy_size = segy_file_valid(qc_path= self.segy_infile_read)
 
         
         with open(self.segy_infile_read,'rb') as self.segy_infile_reader_binary:
             #read the required number of bytes for ebcdic header - standard = 3200
             self.segy_ebcdic = segy_read_ebcdic_header(self.segy_infile_reader_binary.read(self.bytes_ebcdic))
-            #self.ebcdic_bin = self.segy_infile_reader_binary.read(self.bytes_ebcdic)
-            
-            #read the required number of bytes for binary trace header - standard = 400
-            #self.bin_trace_head_bin = self.segy_infile_reader_binary.read(self.bytes_bin_trace_header)
+            #read the required number of bytes for ebcdic header - standard = 400
+            self.segy_binary = binary_trace_header_parameters(self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
 
-            #read 3200 byte EBCDIC and output entire text header to list
-            #self.segy_read_ebcdic_header()
-            
-            #Extract key parameters from binary trace header by iterating through dictionary.
-            #trace format code used to define the data format, bytes per sample and associated decoding parameters
-            #use above info to calculate number of byte per trace and incl trace header
-            #check number of traces present based upon file size in bytes, total initila header in bytes and bytes per trace package
-            #if discrepancy in calculation issue warning
-            #self.segy_read_binary_header()
-            
-            #if self.textual_header_code > 0:
-            #    print("Number of extended textual headers found =", self.textual_header_code)
-            #    self.extended_textual_head_bin = self.segy_infile_reader_binary.read((self.textual_header_code*self.bytes_extended_textual_header))
-            #else:
-            #    print("No extended textual header files found")           
-            self.segy_binary = segy_read_ebcdic_header(self.segy_infile_reader_binary.read(self.bytes_bin_trace_header))
-            #close open read file
             self.segy_infile_reader_binary.close()
 
-        print(self.segy_ebcdic)
-        #directory and file name information
-        #self.cwd = os.getcwd() 
+        print(self.segy_binary)
 
-        #self.in_segy_dir, self.in_segy_file = os.path.split(self.segy_infile_read)
-        
-        #check if the user supplied directory is valid
-        #self.segy_dir_check()
-        ##check if the user supplied filename is valid
-        #self.segy_file_check()
-
-        #pass
 
     def run(self) -> None:
         """Run the main logic"""
