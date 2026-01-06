@@ -47,7 +47,7 @@ class SegyUtil:
 
         self.number_bytes_per_sample,self.trace_format_code_string = sample_format_code(trace_format_code=self.segy_binary['Data Sample Format Code'][2])
 
-        self.number_bytes_per_trace_data = self.segy_binary['Number Samples Per Data Trace'][2] * self.number_bytes_per_trace_data
+        self.number_bytes_per_trace_data = self.segy_binary['Number Samples Per Data Trace'][2] * self.number_bytes_per_sample
         self.number_bytes_per_trace_package = self.number_bytes_per_trace_data * self.segy_binary['No. Data Traces Per Ensemble'][2]
 
         #calculate header and databyte portions of input file
