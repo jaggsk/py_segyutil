@@ -52,7 +52,7 @@ class SegyUtil:
 
         #calculate header and databyte portions of input file
         self.total_header_traces = self.bytes_ebcdic + self.bytes_bin_trace_header + (self.segy_binary['Number Of Extended Textual Records'][2]*self.bytes_extended_textual_header)
-        self.total_data_traces = self.segy_size - self.bytes_ebcdic - self.bytes_bin_trace_header - (self.textual_header_code*self.bytes_extended_textual_header)
+        self.total_data_traces = self.segy_size - self.total_header_traces
 
         #determine that number data trace bytes / bytes per package is an integer multiple, print warngin if not case
         if self.total_data_traces % self.number_bytes_per_trace_package != 0:
