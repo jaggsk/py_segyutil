@@ -1,6 +1,6 @@
 import os
 from ..utils.file_check import segy_file_valid
-from ..utils import sample_format_code, read_validation
+from ..utils import sample_format_code
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 
