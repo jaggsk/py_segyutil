@@ -45,9 +45,40 @@ class SegyUtil:
             self.segy_infile_reader_binary.close()
 
 
-        self.trace_format_code,self.trace_format_code_string = sample_format_code(trace_format_code=self.segy_binary['Data Sample Format Code'][2])
+        self.bytes_per_sample,self.trace_format_code_string = sample_format_code(trace_format_code=self.segy_binary['Data Sample Format Code'][2])
 
-        read_validation()
+        self.number_bytes_per_trace_data = self.segy_binary['Number Samples Per Data Trace'][2] * self.number_bytes_per_trace_data
+        self.number_bytes_per_trace_package = self.number_bytes_per_trace_data * self.segy_binary['No. Data Traces Per Ensemble'][2]
+
+        #calculate header and databyte portions of input file
+        self.total_header_traces = self.bytes_ebcdic + self.bytes_bin_trace_header + (self.segy_binary['Number Of Extended Textual Records'][2]*self.bytes_extended_textual_header)
+        self.total_data_traces = self.segy_size - self.bytes_ebcdic - self.bytes_bin_trace_header - (self.textual_header_code*self.bytes_extended_textual_header)
+
+        #determine that number data trace bytes / bytes per package is an integer multiple, print warngin if not case
+        if self.total_data_traces % self.number_bytes_per_trace_package != 0:
+            print("WARNING - expected number of traces is not an INTEGER - CHECK MANUALLY")
+
+        #calculate expected number of data traces within the file
+        self.expected_number_of_traces = int(self.total_data_traces / self.number_bytes_per_trace_package)  
+
+    def read_segy_summary(self):
+
+        print("\n")
+        print('Total number bytes input file = {0}'.format(self.segy_size))
+        print('Number of samples per trace = {0}'.format(self.segy_binary['Number Samples Per Data Trace'][2]))
+        print('Number of bytes per sample = {0}'.format(self.bytes_per_sample))
+        print('Data format = {0}'.format(self.trace_format_code_string))
+        print('Number of bytes per trace data = {0}'.format(self.number_bytes_per_trace_data))
+        print('Number of bytes per ensemble = {0}'.format(self.number_bytes_per_trace_package))
+        print('Number of bytes per trace ensemble incl. header = {0}'.format(self.number_bytes_per_trace_package +self.bytes_trace_header)) 
+        print('Number of expected textual header files = {0}'.format(self.segy_binary['Number Of Extended Textual Records'][2])) 
+        print('\nExpected number of seismic traces = {0}'.format(self.expected_number_of_traces)) 
+
+
+
+
+
+
 
     def run(self) -> None:
         """Run the main logic"""
