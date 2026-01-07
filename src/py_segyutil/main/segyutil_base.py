@@ -3,6 +3,7 @@ from ..utils.file_check import segy_file_valid
 from ..utils import sample_format_code
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
+from ..headers import data_trace_header_parameters
 
 class SegyUtil:
     """
@@ -55,6 +56,8 @@ class SegyUtil:
         self.number_bytes_per_trace_package = self.number_bytes_per_trace_data + self.bytes_trace_header
         self.sample_rate = self.segy_binary['Sample Interval In Microseconds'][2]
 
+        self.trace_header_dict = data_trace_header_parameters()
+
         self.segy_trace_validation()
 
     def segy_trace_validation(self):
@@ -77,7 +80,7 @@ class SegyUtil:
         print('Sample Rate = {0}'.format(self.segy_binary['Sample Interval In Microseconds'][2]))
         print('Number of samples per trace = {0}'.format(self.segy_binary['Number Samples Per Data Trace'][2]))
         print('Number of bytes per sample = {0}'.format(self.number_bytes_per_sample))
-        print('Number of bytes per sample = {0}'.format(self.segy_binary['Ensemble Fold'][2]))
+        print('Fold = {0}'.format(self.segy_binary['Ensemble Fold'][2]))
         print('Data format = {0}'.format(self.trace_format_code_string))
         print('Number of bytes per trace data = {0}'.format(self.number_bytes_per_trace_data))
         print('Number of bytes per trace ensemble incl. header = {0}'.format(self.number_bytes_per_trace_package)) 
@@ -88,3 +91,12 @@ class SegyUtil:
     def run(self) -> None:
         """Run the main logic"""
         print(f"✅ Hello {self.name}, class ran successfully!")
+
+
+class Trainer:
+    def __init__(self, config):
+        self.config = config
+
+    def trainer_test(self):
+
+        print("It Worked!", self.config)
