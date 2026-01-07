@@ -76,7 +76,7 @@ class SegyUtil:
         print('Total number bytes input file = {0}'.format(self.segy_size))
         print('Sample Rate = {0}'.format(self.segy_binary['Sample Interval In Microseconds'][2]))
         print('Number of samples per trace = {0}'.format(self.segy_binary['Number Samples Per Data Trace'][2]))
-        print('Number of bytes per sample = {0}'.format(self.bytes_per_sample))
+        print('Number of bytes per sample = {0}'.format(self.number_bytes_per_sample))
         print('Number of bytes per sample = {0}'.format(self.segy_binary['Ensemble Fold'][2]))
         print('Data format = {0}'.format(self.trace_format_code_string))
         print('Number of bytes per trace data = {0}'.format(self.number_bytes_per_trace_data))
