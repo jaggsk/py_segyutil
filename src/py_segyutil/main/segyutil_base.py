@@ -95,6 +95,9 @@ class SegyUtil:
         print(f"✅ Hello {self.name}, class ran successfully!")
 
 
+    def test_run(self):
+        self.trainer.trainer_test()
+
 class Trainer:
     def __init__(self, segyutil_parent):
         self.segyutil_parent = segyutil_parent
