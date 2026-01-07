@@ -27,6 +27,8 @@ class SegyUtil:
         else:
             self.big_endian = 'little'
 
+
+        self.trainer = Trainer(self)
         #assign all class variables to a dictionary - appears to dynamically update....
         #self.segy_dict =  vars(self)
 
@@ -94,9 +96,9 @@ class SegyUtil:
 
 
 class Trainer:
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, segyutil_parent):
+        self.segyutil_parent = segyutil_parent
 
     def trainer_test(self):
 
-        print("It Worked!", self.config)
+        print("It Worked!", self.segyutil_parent.segy_binary['Sample Interval In Microseconds'][2])
