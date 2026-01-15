@@ -1,6 +1,6 @@
 import os
 from ..utils.file_check import segy_file_valid
-from ..utils import sample_format_code
+from ..utils import sample_format_code, trace_locations
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 from ..headers import data_trace_header_parameters
@@ -62,6 +62,8 @@ class SegyUtil:
 
         self.segy_trace_validation()
 
+        self.segy_trace_locations = trace_locations(expected_no_traces=self.expected_number_of_traces,no_bytes_trace_package=self.number_bytes_per_trace_package,no_bytes_trace_header=self.bytes_trace_header,ebcdic_bytes=self.bytes_ebcdic)
+
     def segy_trace_validation(self):
 
         #calculate header and databyte portions of input file
@@ -90,13 +92,24 @@ class SegyUtil:
         print('\nExpected number of seismic traces = {0}'.format(self.expected_number_of_traces)) 
 
 
+    def read_header(self):
+        self.trainer.trainer_test()
+
+    def read_trace(self):
+        self.trainer.trainer_test()
+
+    def update_header(self):
+        self.trainer.trainer_test()
+
+    def update_trace(self):
+        self.trainer.trainer_test()
+
     def run(self) -> None:
         """Run the main logic"""
         print(f"✅ Hello {self.name}, class ran successfully!")
 
 
-    def test_run(self):
-        self.trainer.trainer_test()
+
 
 class Trainer:
     def __init__(self, segyutil_parent):
