@@ -13,7 +13,126 @@ def data_trace_header_parameters():
         For display, bytes are printed as 1 to 4, 5 to 8, 9 to ...etc etc
         KJAGGS FEB 2022
         '''
-        
+
+        trace_head_dict = { "Trace Sequence Number":  [1, 4,0],
+                    "Trace Sequence Number within SEGY File":  [5, 8,0],
+                    "Original Field Record Number":  [9, 12,0],  
+                    "Trace Number Within Original Field Record":  [13, 16,0],     
+                    
+                    "Energy Source Point Number":  [17, 20,0], 
+                    "Ensemble Number":  [21, 24,0],   
+                    "Trace Number Within Ensemble":  [25, 28,0],     
+                    "Trace Identification Code":  [29, 30,0],  
+                    "Number Of Vertically Summed Traces":  [31, 32,0],    
+                    "Number Of Horizontally Summed Traces":  [33, 34,0], 
+                    "Data Use":  [35, 36,0],   
+                    "Distance Centre Source Point To Centre Receiver Point":  [37, 40,0],  
+                    
+                    "Receiver Group Elevation":  [41, 44,0],  
+                    "Source Group Elevation":  [45, 48,0],     
+                    "Source Depth Below Surface":  [49, 52,0],  
+                    "Datum Elevation  At Receiver Group":  [53, 56,0], 
+                    "Datum Elevation  At Source":  [57, 60,0],     
+                    "Water Depth At Source":  [61, 64,0], 
+                    "Water Depth At Group":  [65, 68,0], 
+                    "Elevation And Depth Scalar":  [69, 70,0], 
+                    "Coordinate Scalar":  [71, 72,0], 
+                    "Source X":  [73, 76,0], 
+                    "Source Y":  [77, 80,0], 
+                    "Group X":  [81, 84,0], 
+                    "Group Y":  [85, 88,0],       
+                    "Weathering Velocity":  [89, 92,0],    
+                    "Subweathering Velocity":  [93, 94,0],    
+                    "Uphole Time At Source":  [95, 96,0], 
+                    "Uphole Time At Group":  [97, 98,0],      
+                    
+                    "Source Static Correction":  [99, 100,0], 
+                    "Group Static Correction":  [101, 102,0], 
+                    "Total Static":  [103, 104,0], 
+                    "Lag Time A":  [105, 106,0],       
+                    "Lag Time B":  [107, 108,0],    
+                    "Delay Recoprding Time":  [109, 110,0],    
+                    "Mute Time Start ":  [111, 112,0], 
+                    "Mute Time End":  [113, 114,0],                   
+                    "Number Samples In This Trace":  [115, 116,0],   
+                    "Sample Interval Microseconds":  [117, 118,0],                    
+         
+                    "Gain Type Field Instruments":  [119, 120,0], 
+                    "Instrument Gain Constant dB":  [121, 122,0], 
+                    "Instrument Early Gain dB":  [123, 124,0], 
+                    "Correlated":  [125, 126,0],       
+                    "Sweep Frequency Start":  [127, 128,0],    
+                    "Sweep Frequency End":  [129, 130,0],    
+                    "Sweep Length Milliseconds ":  [131, 132,0], 
+                    "Sweep Type":  [133, 134,0],                   
+                    "Sweep Trace Taper Length Start":  [135, 136,0],  
+                    "Sweep Trace Taper Length End":  [137, 138,0],  
+                    "Taper Type":  [139, 140,0],   
+                    
+                    "Anti Alias Filter Freq (Hz) if used":  [141, 142,0], 
+                    "Alias Filter Slope (dB/Octave)":  [143, 144,0], 
+                    "Notch Filter Freq (Hz), if used":  [145, 146,0],   
+                    "Notch Filter Slope (dB/Octave)":  [147, 148,0],
+                    "Low Cut Freq (Hz), if used":  [149, 150,0],
+                    "High Cut Freq (Hz), if used":  [151, 152,0],
+                    "Low Cut Slope (dB/Octave)":  [153, 154,0],
+                    "High Cut Slope (dB/Octave)":  [155, 156,0], 
+                    "Year Data Recorded":  [157, 158,0],  
+
+                    "Day Of Year":  [159, 160,0], 
+                    "Hour Of Day":  [161, 162,0], 
+                    "Minute Of Hour":  [163, 164,0],   
+                    "Second Of Minute":  [165, 166,0],
+                    "Time Basis Code":  [167, 168,0],
+                    "Trace Weighting Factor":  [169, 170,0],
+                    "Geophone Group Number Of Roll Switch Position One":  [171, 172,0],
+                    "Geophone Group Number Of Trace Number One Within Original Field Record":  [173, 174,0], 
+                    "Geophone Group Number Of Last Trace Within Original Field Record":  [175, 176,0],                        
+                    "Gap Size":  [177, 178,0], 
+                    "Over Travel Associated With Taper":  [179, 180,0], 
+                    "X Coordinate CDP":  [181, 184,0],   
+                    "Y Coordinate CDP":  [185, 188,0],
+                    "3D Inline":  [189, 192,0],
+                    "3D Xline":  [193, 196,0],
+                    "Shotpoint Number 2D":  [197, 200,0],
+                    
+                    "Shotpoint Scalar":  [201, 202,0], 
+                    "Trace Value Measurement Unit":  [203, 204,0],    
+                    "Transduction Constant":  [205, 210,0], 
+                    "Transduction Units":  [211, 212,0],  
+                    "Device/Trace Identifier":  [213, 214,0],            
+
+                    "TWT Scalar":  [215, 216,0], 
+                    "Source Type/Orientation":  [217, 218,0],    
+                    "Source Energy Direction":  [219, 224,0], 
+                    "Source Measurement":  [225, 230,0],  
+                    
+                    "Source Measurement Unit":  [231, 232,0], 
+                    "Unassigned":  [233, 240,0],                
+
+           
+
+             }   #end of dictionary 
+
+
+        return trace_head_dict
+
+def data_trace_header_parameters_old():
+        '''
+        Create a python dictionary to read 240 byte trace header.
+        Standard format as defined below
+        https://www.seg.org/Portals/0/SEG/News%20and%20Resources/Technical%20Standards/seg_y_rev1.pdf
+        Key = category as text line
+        Dict[0] = first byte to read
+        Dict[1] = end byte to read
+        For each dictionary straing key, read from start  byte [key][0] to end byte dict[key][1] and store result in dict[key][2]
+        For display purposes the start byte has +1 added
+        Example:
+        self.bin_dict = { "Job Identification Number":  [0, 4,0]} read bytes 0-4, format of python slicing is bytes 0-3. 
+        For display, bytes are printed as 1 to 4, 5 to 8, 9 to ...etc etc
+        KJAGGS FEB 2022
+        '''
+
         trace_head_dict = { "Trace Sequence Number":  [0, 4,0],
                     "Trace Sequence Number within SEGY File":  [4, 8,0],
                     "Original Field Record Number":  [8, 12,0],  
@@ -108,8 +227,11 @@ def data_trace_header_parameters():
                     "Source Measurement":  [224, 230,0],  
                     
                     "Source Measurement Unit":  [230, 232,0], 
-                    "Unassigned":  [232, 240,0],                            
-        
-            }   #end of dictionary 
+                    "Unassigned":  [232, 240,0],                
+
+           
+
+             }   #end of dictionary 
+
 
         return trace_head_dict
