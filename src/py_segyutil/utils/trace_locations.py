@@ -1,6 +1,6 @@
 import numpy as np
 
-def create_trace_locations(expected_no_traces=None,no_bytes_trace_package=None,no_bytes_trace_header=None, ebcdic_bytes = 3600):
+def create_trace_locations(expected_no_traces=None,no_bytes_trace_package=None,no_bytes_trace_header=None, ebcdic_bin_header_bytes = 3600):
 
     '''
     Create numpy array denoting the following in columns
@@ -15,10 +15,10 @@ def create_trace_locations(expected_no_traces=None,no_bytes_trace_package=None,n
 
     arr = np.column_stack([
         trace_no,
-        trace_no*no_bytes_trace_package + ebcdic_bytes,
-        trace_no*no_bytes_trace_package + ebcdic_bytes + no_bytes_trace_header - 1,
-        trace_no*no_bytes_trace_package + ebcdic_bytes + no_bytes_trace_header,
-        trace_no*no_bytes_trace_package + ebcdic_bytes + no_bytes_trace_package - 1        
+        trace_no*no_bytes_trace_package + ebcdic_bin_header_bytes,
+        trace_no*no_bytes_trace_package + ebcdic_bin_header_bytes + no_bytes_trace_header - 1,
+        trace_no*no_bytes_trace_package + ebcdic_bin_header_bytes + no_bytes_trace_header,
+        trace_no*no_bytes_trace_package + ebcdic_bin_header_bytes + no_bytes_trace_package - 1        
 
     ])
     

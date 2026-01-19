@@ -4,6 +4,7 @@ from ..utils import sample_format_code, create_trace_locations
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 from ..headers import data_trace_header_parameters
+#from ..trace import byte_adjustment
 
 class SegyUtil:
     """
@@ -54,6 +55,7 @@ class SegyUtil:
         else:
             self.data_type = "Gather"            
 
+        self.number_bytes_header_package = self.bytes_ebcdic + self.bytes_bin_trace_header + (self.segy_binary['Number Of Extended Textual Records'][2] * self.bytes_extended_textual_header)
         self.number_bytes_per_trace_data = self.segy_binary['Number Samples Per Data Trace'][2] * self.number_bytes_per_sample
         self.number_bytes_per_trace_package = self.number_bytes_per_trace_data + self.bytes_trace_header
         self.sample_rate = self.segy_binary['Sample Interval In Microseconds'][2]
@@ -62,7 +64,7 @@ class SegyUtil:
 
         self.segy_trace_validation()
 
-        self.segy_trace_locations = create_trace_locations(expected_no_traces=self.expected_number_of_traces,no_bytes_trace_package=self.number_bytes_per_trace_package,no_bytes_trace_header=self.bytes_trace_header,ebcdic_bytes=self.bytes_ebcdic)
+        self.segy_trace_locations = create_trace_locations(expected_no_traces=self.expected_number_of_traces,no_bytes_trace_package=self.number_bytes_per_trace_package,no_bytes_trace_header=self.bytes_trace_header,ebcdic_bin_header_bytes=self.number_bytes_header_package)
 
     def segy_trace_validation(self):
 
