@@ -18,7 +18,7 @@ def read_single_trace_header(trace_header_package = None,trace_header_loc_dict=N
 
     for key, value in trace_header_loc_dict.items():
 
-        first_byte, byte_length = byte_adjustment(first_byte= value[0],second_byte = value[1])
+        first_byte, byte_length = byte_adjustment(first_byte= value[0],last_byte = value[1])
         read_trace_header_dict[key]  = int.from_bytes(trace_header_package[first_byte:byte_length], byteorder=trace_read_byte_order , signed=True)
 
     return read_trace_header_dict

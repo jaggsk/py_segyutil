@@ -98,7 +98,7 @@ class SegyUtil:
     def read_all_headers(self, header_byte_dict=None):
         #self.trainer.trainer_test()
 
-        df_header = read_segy_file_headers(segy_read_infile=self.segy_infile_read,trace_header_read_dict=header_byte_dict,byte_order=self.big_endian)
+        df_header = read_segy_file_headers(segy_read_infile=self.segy_infile_read,trace_locations = self.segy_trace_locations,trace_header_read_dict=header_byte_dict,byte_order=self.big_endian)
 
         return df_header
 
