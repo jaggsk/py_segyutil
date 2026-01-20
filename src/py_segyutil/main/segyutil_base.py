@@ -4,6 +4,7 @@ from ..utils import sample_format_code, create_trace_locations
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 from ..headers import data_trace_header_parameters
+from ..trace.read_segy import read_segy_file_headers
 #from ..trace import byte_adjustment
 
 class SegyUtil:
@@ -94,8 +95,12 @@ class SegyUtil:
         print('\nExpected number of seismic traces = {0}'.format(self.expected_number_of_traces)) 
 
 
-    def read_all_headers(self):
-        self.trainer.trainer_test()
+    def read_all_headers(self, header_byte_dict=None):
+        #self.trainer.trainer_test()
+
+        df_header = read_segy_file_headers(segy_read_infile=self.segy_infile_read,trace_header_read_dict=header_byte_dict,byte_order=self.big_endian)
+
+        return df_header
 
     def read_trace(self):
         self.trainer.trainer_test()
