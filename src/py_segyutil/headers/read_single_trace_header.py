@@ -1,4 +1,4 @@
-from ..trace import byte_adjustment
+from ..utils import byte_adjustment
 
 def read_single_trace_header(trace_header_package = None,trace_header_loc_dict=None, trace_read_byte_order = 'big'):
 
