@@ -65,7 +65,7 @@ class SegyUtil:
 
         self.segy_params_dict['Number Bytes Header Package'] = self.no_bytes_ebcdic + self.no_bytes_bin_trace_header + (self.segy_infile_read_binary['Number Of Extended Textual Records'][2] * self.no_bytes_extended_textual_header)
         self.segy_params_dict['Number Bytes Trace Data'] = self.segy_params_dict['Number Samples Per Trace'] * self.segy_params_dict['Number Bytes Per Sample']
-        self.segy_params_dict['Number Bytes Trace Package'] = self.number_bytes_per_trace_data + self.segy_params_dict['Number Bytes Trace Data']
+        self.segy_params_dict['Number Bytes Trace Package'] = self.no_bytes_trace_header + self.segy_params_dict['Number Bytes Trace Data']
         self.segy_params_dict['Sample Rate'] = self.segy_infile_read_binary['Sample Interval In Microseconds'][2]
 
  
