@@ -1,6 +1,6 @@
 import os
 from ..utils.file_check import segy_file_valid
-from ..utils import sample_format_code, create_trace_locations
+from ..utils import sample_format_code, create_trace_locations, print_segy_summary
 from ..headers import segy_read_ebcdic_header
 from ..headers import segy_read_binary_header
 from ..headers import data_trace_header_parameters
@@ -29,6 +29,8 @@ class SegyUtil:
         else:
             self.big_endian = 'little'
 
+        self.segy_load_flag = 0
+
 
 
     def read_segy(self,segy_infile_read = None):
@@ -55,6 +57,9 @@ class SegyUtil:
         self.segy_params_dict['Number Bytes Binary Header'] = self.no_bytes_bin_trace_header
         self.segy_params_dict['Number Bytes Trace Header'] = self.no_bytes_trace_header
         self.segy_params_dict['Number Bytes Extended Textual Header'] = self.no_bytes_extended_textual_header
+        self.segy_params_dict['SEGY Revision Format Number'] = self.segy_infile_read_binary['SEGY Revision Format Number'][2]
+        self.segy_params_dict['Fold'] = self.segy_infile_read_binary['Ensemble Fold'][2]
+
 
         self.segy_params_dict['Number Extended Textual Records'] = self.segy_infile_read_binary['Number Of Extended Textual Records'][2] 
 
@@ -75,46 +80,47 @@ class SegyUtil:
         self.segy_params_dict['Number Bytes Trace Package'] = self.segy_params_dict['Number Bytes Trace Header'] + self.segy_params_dict['Number Bytes Trace Data']
         self.segy_params_dict['Sample Rate'] = self.segy_infile_read_binary['Sample Interval In Microseconds'][2]
 
- 
+        if (self.segy_params_dict['Input File Size Bytes']-self.segy_params_dict['Number Bytes Header Package']) % self.segy_params_dict['Number Bytes Trace Package'] != 0:
+            print("WARNING - expected number of traces is not an INTEGER - CHECK MANUALLY")
+            # TO DO - Raise error module
+
+        self.segy_params_dict['Expected Number Seismic Traces'] = int((self.segy_params_dict['Input File Size Bytes']-self.segy_params_dict['Number Bytes Header Package']) / self.segy_params_dict['Number Bytes Trace Package'])  
+
+        #add standard trace header parameters to a dictionary within class
         self.trace_header_dict = data_trace_header_parameters()
 
-        #self.segy_trace_validation()
+        self.segy_load_flag = 1
 
-        #self.segy_trace_locations = create_trace_locations(expected_no_traces=self.expected_number_of_traces,no_bytes_trace_package=self.number_bytes_per_trace_package,no_bytes_trace_header=self.bytes_trace_header,ebcdic_bin_header_bytes=self.number_bytes_header_package)
 
-    def segy_trace_validation(self):
+    #def segy_trace_validation(self):
 
         #calculate header and databyte portions of input file
-        self.total_header_bytes = self.no_bytes_ebcdic + self.no_bytes_bin_trace_header + (self.segy_binary['Number Of Extended Textual Records'][2]*self.no_bytes_extended_textual_header)
-        self.total_data_bytes = self.segy_size - self.total_header_bytes
+        #self.total_header_bytes = self.no_bytes_ebcdic + self.no_bytes_bin_trace_header + (self.segy_binary['Number Of Extended Textual Records'][2]*self.no_bytes_extended_textual_header)
+        #self.total_data_bytes = self.segy_size - self.total_header_bytes
 
         #determine that number data trace bytes / bytes per package is an integer multiple, print warngin if not case
-        if self.total_data_bytes % self.no_bytes_per_trace_package != 0:
-            print("WARNING - expected number of traces is not an INTEGER - CHECK MANUALLY")
+        #if self.total_data_bytes % self.no_bytes_per_trace_package != 0:
+        #    print("WARNING - expected number of traces is not an INTEGER - CHECK MANUALLY")
 
         #calculate expected number of data traces within the file
-        self.expected_number_of_traces = int(self.total_data_bytes / self.no_bytes_per_trace_package)  
-
-    def segy_params_dict(self):
-
-        #Host for downloaded parameters
-        self.segy_params_dict = []
-        
+        #self.expected_number_of_traces = int(self.total_data_bytes / self.no_bytes_per_trace_package)  
 
 
     def read_segy_summary(self):
 
-        print("\n")
-        print('Total number bytes input file = {0}'.format(self.segy_size))
-        print('Sample Rate = {0}'.format(self.segy_binary['Sample Interval In Microseconds'][2]))
-        print('Number of samples per trace = {0}'.format(self.segy_binary['Number Samples Per Data Trace'][2]))
-        print('Number of bytes per sample = {0}'.format(self.number_bytes_per_sample))
-        print('Fold = {0}'.format(self.segy_binary['Ensemble Fold'][2]))
-        print('Data format = {0}'.format(self.trace_format_code_string))
-        print('Number of bytes per trace data = {0}'.format(self.number_bytes_per_trace_data))
-        print('Number of bytes per trace ensemble incl. header = {0}'.format(self.number_bytes_per_trace_package)) 
-        print('Number of expected textual header files = {0}'.format(self.segy_binary['Number Of Extended Textual Records'][2])) 
-        print('\nExpected number of seismic traces = {0}'.format(self.expected_number_of_traces)) 
+        print_segy_summary(segy_summary_dict=self.segy_params_dict)
+
+        #print("\n")
+        #print('Total number bytes input file = {0}'.format(self.segy_size))
+        #print('Sample Rate = {0}'.format(self.segy_binary['Sample Interval In Microseconds'][2]))
+        #print('Number of samples per trace = {0}'.format(self.segy_binary['Number Samples Per Data Trace'][2]))
+        #print('Number of bytes per sample = {0}'.format(self.number_bytes_per_sample))
+        #print('Fold = {0}'.format(self.segy_binary['Ensemble Fold'][2]))
+        #print('Data format = {0}'.format(self.trace_format_code_string))
+        #print('Number of bytes per trace data = {0}'.format(self.number_bytes_per_trace_data))
+        #print('Number of bytes per trace ensemble incl. header = {0}'.format(self.number_bytes_per_trace_package)) 
+        #print('Number of expected textual header files = {0}'.format(self.segy_binary['Number Of Extended Textual Records'][2])) 
+        #print('\nExpected number of seismic traces = {0}'.format(self.expected_number_of_traces)) 
 
     def read_all_headers(self, header_byte_dict=None):
         #self.trainer.trainer_test()
