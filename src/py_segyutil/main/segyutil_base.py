@@ -34,12 +34,12 @@ class SegyUtil:
     def read_segy(self,segy_infile_read = None):
 
         #Host for downloaded parameters
-        self.segy_params_dict = []
+        self.segy_params_dict = {}
 
         #Routine to file path string validity + check file size vs calculated structure
         self.segy_infile_read = segy_infile_read
         self.segy_infile_read_path, self.segy_infile_read_filename,self.segy_infile_read_size = segy_file_valid(qc_path= self.segy_infile_read)
-        self.segy_params_dict['Input File String'] = segy_infile_read
+        self.segy_params_dict['Input File String'] = self.segy_infile_read
         self.segy_params_dict['Input File Path'],self.segy_params_dict['Input File Name'],self.segy_params_dict['Input File Size Bytes'] = segy_file_valid(qc_path= self.segy_infile_read)
 
         #extract ebcdic and binary header byte portions and decode
@@ -51,9 +51,8 @@ class SegyUtil:
 
             self.segy_infile_reader_binary.close()
 
-        self.segy_params_dict['Trace Format Code'] = sample_format_code(trace_format_code=self.segy_infile_read_binary['Data Sample Format Code'][2])
         self.segy_params_dict['Number Bytes Per Sample'],self.segy_params_dict['Trace Format'] = sample_format_code(trace_format_code=self.segy_infile_read_binary['Data Sample Format Code'][2])
-        self.segy_params_dict['Trace Format'] = self.trace_format_code_string
+        self.segy_params_dict['Trace Format Code'] = self.segy_infile_read_binary['Data Sample Format Code'][2]
         
         self.segy_params_dict['Data Type'] = None
 
@@ -62,9 +61,11 @@ class SegyUtil:
         else:
             self.segy_params_dict['Data Type'] = "Gather"            
         
+        self.segy_params_dict['Number Samples Per Trace'] = self.segy_infile_read_binary['Number Samples Per Data Trace'][2]
+
         self.segy_params_dict['Number Bytes Header Package'] = self.no_bytes_ebcdic + self.no_bytes_bin_trace_header + (self.segy_infile_read_binary['Number Of Extended Textual Records'][2] * self.no_bytes_extended_textual_header)
-        self.segy_params_dict['Number Bytes Trace Data'] = self.segy_infile_read_binary['Number Samples Per Data Trace'][2] * self.number_bytes_per_sample
-        self.segy_params_dict['Number Bytes Trace Package'] = self.number_bytes_per_trace_data + self.no_bytes_trace_header
+        self.segy_params_dict['Number Bytes Trace Data'] = self.segy_params_dict['Number Samples Per Trace'] * self.segy_params_dict['Number Bytes Per Sample']
+        self.segy_params_dict['Number Bytes Trace Package'] = self.number_bytes_per_trace_data + self.segy_params_dict['Number Bytes Trace Data']
         self.segy_params_dict['Sample Rate'] = self.segy_infile_read_binary['Sample Interval In Microseconds'][2]
 
  
