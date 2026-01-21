@@ -1,5 +1,5 @@
 from .bin_trace_default import binary_trace_header_parameters
-from ..utils import byte_adjustment
+
 
 def segy_read_binary_header(binary_bin=None,big_endian = None): 
     '''
@@ -14,7 +14,8 @@ def segy_read_binary_header(binary_bin=None,big_endian = None):
         
     #iterate through each dictionary key and store the extracted integer from binary at position number 3 in the dictionary structure.
     for key in bin_dict:
-        first_byte, byte_length = byte_adjustment(first_byte=bin_dict[key][0],last_byte=bin_dict[key][1])
-        bin_dict[key][2] = int.from_bytes(binary_bin[first_byte:byte_length], byteorder=big_endian)
+        bin_first_byte = bin_dict[key][0]-1
+        bin_last_byte=bin_dict[key][1]
+        bin_dict[key][2] = int.from_bytes(binary_bin[bin_first_byte:bin_last_byte], byteorder=big_endian)
 
     return bin_dict
