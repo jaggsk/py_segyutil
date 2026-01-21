@@ -51,6 +51,13 @@ class SegyUtil:
 
             self.segy_infile_reader_binary.close()
 
+        self.segy_params_dict['Number Bytes EBCDIC'] = self.no_bytes_ebcdic
+        self.segy_params_dict['Number Bytes Binary Header'] = self.no_bytes_bin_trace_header
+        self.segy_params_dict['Number Bytes Trace Header'] = self.no_bytes_trace_header
+        self.segy_params_dict['Number Bytes Extended Textual Header'] = self.no_bytes_extended_textual_header
+
+        self.segy_params_dict['Number Extended Textual Records'] = self.segy_infile_read_binary['Number Of Extended Textual Records'][2] 
+
         self.segy_params_dict['Number Bytes Per Sample'],self.segy_params_dict['Trace Format'] = sample_format_code(trace_format_code=self.segy_infile_read_binary['Data Sample Format Code'][2])
         self.segy_params_dict['Trace Format Code'] = self.segy_infile_read_binary['Data Sample Format Code'][2]
         
@@ -63,13 +70,12 @@ class SegyUtil:
         
         self.segy_params_dict['Number Samples Per Trace'] = self.segy_infile_read_binary['Number Samples Per Data Trace'][2]
 
-        self.segy_params_dict['Number Bytes Header Package'] = self.no_bytes_ebcdic + self.no_bytes_bin_trace_header + (self.segy_infile_read_binary['Number Of Extended Textual Records'][2] * self.no_bytes_extended_textual_header)
+        self.segy_params_dict['Number Bytes Header Package'] = self.segy_params_dict['Number Bytes EBCDIC'] + self.segy_params_dict['Number Bytes Binary Header'] + (self.segy_params_dict['Number Extended Textual Records'] * self.segy_params_dict['Number Bytes Extended Textual Header'])
         self.segy_params_dict['Number Bytes Trace Data'] = self.segy_params_dict['Number Samples Per Trace'] * self.segy_params_dict['Number Bytes Per Sample']
-        self.segy_params_dict['Number Bytes Trace Package'] = self.no_bytes_trace_header + self.segy_params_dict['Number Bytes Trace Data']
+        self.segy_params_dict['Number Bytes Trace Package'] = self.segy_params_dict['Number Bytes Trace Header'] + self.segy_params_dict['Number Bytes Trace Data']
         self.segy_params_dict['Sample Rate'] = self.segy_infile_read_binary['Sample Interval In Microseconds'][2]
 
  
-
         self.trace_header_dict = data_trace_header_parameters()
 
         #self.segy_trace_validation()
