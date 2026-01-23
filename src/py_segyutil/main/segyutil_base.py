@@ -107,8 +107,17 @@ class SegyUtil:
             print_segy_summary(segy_summary_dict=self.segy_params_dict)
 
 
-    def read_all_headers(self, header_byte_dict=None):
-        #self.trainer.trainer_test()
+    def read_all_trace_headers(self, header_byte_dict=None):
+        #use default trace headers if None selected
+        if header_byte_dict == None:
+            header_byte_dict = self.trace_header_dict
+        
+        df_header = read_segy_file_headers(segy_read_infile=self.segy_infile_read,trace_locations = self.segy_trace_locations,trace_header_read_dict=header_byte_dict,byte_order=self.big_endian)
+
+        return df_header
+    
+    def read_selected_trace_headers(self, header_byte_dict=None):
+
 
         df_header = read_segy_file_headers(segy_read_infile=self.segy_infile_read,trace_locations = self.segy_trace_locations,trace_header_read_dict=header_byte_dict,byte_order=self.big_endian)
 
